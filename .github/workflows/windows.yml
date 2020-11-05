@@ -26,6 +26,7 @@ jobs:
       with:
         auto-update-conda: true
         auto-activate-base: true
+        activate-environment: ''
     - name: Install conda-devenv
       shell: powershell
       run: |
