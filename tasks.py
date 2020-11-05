@@ -73,7 +73,6 @@ def _get_cmake_command(
     if sys.platform.startswith('win'):
         cmake_command = strip_and_join(f"""
             cmake
-                -G "{cmake_generator}"
                 -S {root_dir}
                 -B {relative_artifacts_dir}
         """)
@@ -167,7 +166,7 @@ def compile(c, clean=False, config='Release', number_of_jobs=-1, gen_wrappers=Fa
             --target install
             --config {config}
             --
-                {f"-j {number_of_jobs}" if number_of_jobs >= 0 else ""}
+                {f"-j {number_of_jobs}" if number_of_jobs >= 1 else ""}
     """)
 
     commands = [cmake_command, build_command]
