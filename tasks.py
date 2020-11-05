@@ -13,7 +13,7 @@ if sys.platform.startswith('win'):
     # BUILD_DIR_DEFAULT = WindowsPath(build_dir_default_as_str.replace(";", ""))  # this should works, but...
     # This is a limitation since GH Actions for Win lose env variables
     # defined on environment.devenv.yml
-    BUILD_DIR_DEFAULT = WindowsPath(Path(__file__).parent.absolute())
+    BUILD_DIR_DEFAULT = WindowsPath(Path(__file__).parent.absolute()) / "build-autodiff"
 else:
     BUILD_DIR_DEFAULT = Path(build_dir_default_as_str.replace(":", ""))
 
