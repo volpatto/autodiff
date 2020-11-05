@@ -22,7 +22,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: goanpeca/setup-miniconda@v1.0.2
+    - uses: conda-incubator/setup-miniconda@v1.7.0
       with:
         auto-update-conda: true
         auto-activate-base: true
@@ -37,8 +37,9 @@ jobs:
       shell: powershell
       run: |
         conda activate autodiff
-        cmake -S . -B .build
-        cmake --build .build --config ${{ env.configuration }} --target install
+        inv compile
     - name: Tests
       shell: powershell
-      run: .\.build\test\${{ env.configuration }}\tests.exe
+      run: |
+        conda activate autodiff
+        inv tests

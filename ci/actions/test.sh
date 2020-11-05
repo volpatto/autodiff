@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-./.build/test/tests
+source activate autodiff
+inv -e tests
