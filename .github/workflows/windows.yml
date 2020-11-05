@@ -25,6 +25,7 @@ jobs:
     - uses: conda-incubator/setup-miniconda@v1.7.0
       with:
         auto-update-conda: true
+        auto-activate-base: true
     - name: Install conda-devenv
       shell: powershell
       run: |
@@ -38,4 +39,4 @@ jobs:
         inv compile -c -n 2
     - name: Tests
       shell: powershell
-      run: .\.build\test\${{ env.configuration }}\tests.exe
+      run: inv tests
