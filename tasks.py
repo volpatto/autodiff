@@ -178,10 +178,11 @@ def compile(c, clean=False, config='Release', number_of_jobs=-1, gen_wrappers=Fa
         wrappers_command = _get_wrappers_command(build_dir / "wrappers/conda")
         commands.append(wrappers_command)
 
-    # os.chdir(BUILD_DIR_DEFAULT)
-    use_pty = True
     if sys.platform.startswith('win'):
         use_pty = False
+    else:
+        use_pty = True
+        os.chdir(BUILD_DIR_DEFAULT)
     c.run(" && ".join(commands), pty=use_pty)
 
 

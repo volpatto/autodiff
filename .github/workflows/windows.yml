@@ -40,4 +40,6 @@ jobs:
         inv compile
     - name: Tests
       shell: powershell
-      run: inv tests
+      run: |
+        conda activate autodiff
+        inv tests
