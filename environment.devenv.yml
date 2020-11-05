@@ -31,4 +31,5 @@ dependencies:
 environment:
 
   AUTODIFF_BUILD_DIR:
-    - {{ root }}\build-autodiff
+    - {{ root }}/build-autodiff  # [unix]
+    - {{ root }}\build-autodiff  # [win]
