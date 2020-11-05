@@ -76,8 +76,9 @@ def _get_cmake_command(
     if sys.platform.startswith('win'):
         cmake_command = strip_and_join(f"""
             cmake
+                -G "{cmake_generator}"
                 -S {root_dir}
-                -B {relative_artifacts_dir}
+                -B {BUILD_DIR_DEFAULT}
         """)
     else:
         cmake_command = strip_and_join(f"""
@@ -107,10 +108,10 @@ def _get_wrappers_command(c, wrappers_dir: Path) -> str:
     """)
 
 
-def _get_test_command():
+def _get_test_command(config: str = 'Release'):
     if sys.platform.startswith('win'):
         test_command = strip_and_join(f"""
-            {BUILD_DIR_DEFAULT}\\test\\tests
+            {BUILD_DIR_DEFAULT}\\test\\{config}\\tests
                 --success
                 --reporter compact
         """)
@@ -165,7 +166,7 @@ def compile(c, clean=False, config='Release', number_of_jobs=-1, gen_wrappers=Fa
     cmake_command = _get_cmake_command(build_dir=build_dir, cmake_generator=cmake_generator, config=config)
     build_command = strip_and_join(f"""
         cmake
-            --build .
+            --build {BUILD_DIR_DEFAULT}
             --target install
             --config {config}
             --
@@ -177,7 +178,7 @@ def compile(c, clean=False, config='Release', number_of_jobs=-1, gen_wrappers=Fa
         wrappers_command = _get_wrappers_command(build_dir / "wrappers/conda")
         commands.append(wrappers_command)
 
-    os.chdir(BUILD_DIR_DEFAULT)
+    # os.chdir(BUILD_DIR_DEFAULT)
     use_pty = True
     if sys.platform.startswith('win'):
         use_pty = False
@@ -211,11 +212,11 @@ def wrappers(c, wrappers_dir=BUILD_DIR_DEFAULT / "wrappers/conda"):
 
 
 @task
-def tests(c):
+def tests(c, config='Release'):
     """
     Execute autodiff tests in Catch
     """
-    test_command = _get_test_command()
+    test_command = _get_test_command(config)
     use_pty = True
     if sys.platform.startswith('win'):
         use_pty = False
