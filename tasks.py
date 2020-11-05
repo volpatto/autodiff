@@ -60,7 +60,7 @@ def _get_and_prepare_build(
     return build_dir
 
 
-def _get_cmake_command(
+def _get_cmake_config_command(
         build_dir: Path,
         cmake_generator: str,
         cmake_arch: Optional[str] = None,
@@ -91,6 +91,18 @@ def _get_cmake_command(
         """)
 
     return cmake_command
+
+
+def _get_cmake_build_command(build_dir: Path, config: str = 'Release', number_of_jobs: int = -1):
+    build_command = strip_and_join(f"""
+        cmake
+            --build {build_dir}
+            --target install
+            --config {config}
+            --
+                {f"-j {number_of_jobs}" if number_of_jobs >= 1 else ""}
+    """)
+    return build_command
 
 
 def _get_wrappers_command(c, wrappers_dir: Path) -> str:
@@ -163,15 +175,8 @@ def compile(c, clean=False, config='Release', number_of_jobs=-1, gen_wrappers=Fa
     else:
         cmake_generator = "Ninja"
 
-    cmake_command = _get_cmake_command(build_dir=build_dir, cmake_generator=cmake_generator, config=config)
-    build_command = strip_and_join(f"""
-        cmake
-            --build {BUILD_DIR_DEFAULT}
-            --target install
-            --config {config}
-            --
-                {f"-j {number_of_jobs}" if number_of_jobs >= 1 else ""}
-    """)
+    cmake_command = _get_cmake_config_command(build_dir=build_dir, cmake_generator=cmake_generator, config=config)
+    build_command = _get_cmake_build_command(build_dir=build_dir, config=config, number_of_jobs=number_of_jobs)
 
     commands = [cmake_command, build_command]
     if gen_wrappers:

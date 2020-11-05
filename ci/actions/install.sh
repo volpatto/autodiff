@@ -7,4 +7,4 @@ conda update -q conda
 conda info -a
 conda devenv
 source activate autodiff
-inv compile -c -n 2
+inv -e compile -n 2
