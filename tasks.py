@@ -7,7 +7,6 @@ import shutil
 import sys
 
 
-build_dir_default_as_str = os.environ['AUTODIFF_BUILD_DIR']
 if sys.platform.startswith('win'):
     from pathlib import WindowsPath
     # BUILD_DIR_DEFAULT = WindowsPath(build_dir_default_as_str.replace(";", ""))  # this should works, but...
@@ -15,6 +14,7 @@ if sys.platform.startswith('win'):
     # defined on environment.devenv.yml
     BUILD_DIR_DEFAULT = WindowsPath(Path(__file__).parent.absolute()) / "build-autodiff"
 else:
+    build_dir_default_as_str = os.environ['AUTODIFF_BUILD_DIR']
     BUILD_DIR_DEFAULT = Path(build_dir_default_as_str.replace(":", ""))
 
 
